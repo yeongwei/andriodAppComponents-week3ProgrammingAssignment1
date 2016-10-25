@@ -1,3 +1,4 @@
+
 package vandy.mooc.assignments.assignment.activities;
 
 import android.content.Intent;
@@ -77,8 +78,8 @@ public class MainActivity extends MainActivityBase {
      */
     @Override
     protected void startDownloadForResult(ArrayList<Uri> urls) {
-         // TODO (A2): Start the Gallary Activity for result with the passed in Uri(s)
-        
+        // TODO (A2): Start the Gallery Activity for result with the passed in Uri(s)
+
     }
 
     /*
@@ -103,18 +104,20 @@ public class MainActivity extends MainActivityBase {
             Intent data) {
         Log.d(TAG, "onActivityResults() called.");
 
-        // We are only interested in results returned by the
-        // DownloadActivity.
-       
+        // TODO (A2): Check if the request code matches the expected
+        // static DOWNLOAD_REQUEST_CODE field value. If so then ...
+
             // TODO (A2): If the result code is RESULT_OK, then
             // call a local helper method to extract and display the returned
             // list of image URLs. Otherwise, call the ViewUtils show toast
-            // helper to display the string resource with id R.string
-            // .download_activity_cancelled.
+            // helper to display the string resource with id
+            // R.string .download_activity_cancelled. In either case, return
+            // without calling the super class method.
 
-			
-        // Allow super class to handle results from unknown origins.
-        
+
+        // TODO (A2): The request code is not recognized so transparently forward
+        // parameters to super class method to handle.
+
     }
 
     /**
@@ -127,14 +130,16 @@ public class MainActivity extends MainActivityBase {
     private void extractAndUpdateUrls(Intent intent) {
         // TODO (A2): Extract the list of downloaded image URLs from the
         // passed intent.
-       
+
 
         // TODO (A2): If the list is empty, call ViewUtils show toast helper
         // to display the string resource R.string.no_images_received.
-       
-        // TODO (A2): Always call the base class setItems() helper which
-        // will refresh the layout to show the received list of URLs.
-       
+
+
+        // TODO (A2): Always call the base class setItems() helper which will
+        // refresh the layout to display the list contents (or nothing if the
+        // list is empty).
+
     }
 
 

@@ -1,3 +1,4 @@
+
 package vandy.mooc.assignments.assignment.activities;
 
 import android.content.Context;
@@ -25,24 +26,6 @@ import static android.app.Activity.RESULT_OK;
  * This activity class contains helper methods to support different was you can
  * use Intents to communicate between activities (in the assignments case
  * between the MainActivity and this GalleryActivity).
- * <p/>
- * Assignment 1:
- * <p/>
- * In assignment 1, the MainActivity constructs a starting intent containing the
- * displayed list of remote image URLs and then uses this intent to start this
- * GalleryActivity. This activity is the required to ...
- * <p/>
- * Assignment 2:
- * <p/>
- * In assignment 2, the MainActivity constructs a starting intent containing the
- * displayed list of remote image URLs and then uses this intent to start this
- * GalleryActivity "for results". This activity is the required to ...
- * <p/>
- * Assignment 3:
- * <p/>
- * In assignment 3, the MainActivity constructs a starting intent containing the
- * displayed list of remote image URLs and then uses this intent to start this
- * GalleryActivity "for results". This activity is the required to ...
  */
 public class GalleryActivity
         extends GalleryActivityBase {
@@ -73,15 +56,15 @@ public class GalleryActivity
         // TODO (A1,A2,A3): Create a new intent for starting this activity
         // using the passed context along with the class identifier
         // for this class.
-        
+
 
         // TODO (A1,A2,A3): Put the received list of input URLs as an intent
         // use putParcelableArrayListExtra(String, ArrayList<Uri>) on the intent
         // using the predefined INTENT_EXTRA_URLS extra name.
-        
+
 
         // TODO (A1,A2,A3): Return the intent.
-        
+
     }
 
     /*
@@ -107,7 +90,7 @@ public class GalleryActivity
             // Call local help method to extract the URLs from the activity's
             // starting intent and pass these URLs into the super class using
             // the setItems() helper method.
-          
+
         } else {
             // The activity is being recreated after configuration change.
             // You can restore your activity's saved state from the passed
@@ -119,7 +102,7 @@ public class GalleryActivity
 
         // TODO(A2): Call base class helper method to register your downloader
         // implementation class.
-        
+
     }
 
     /**
@@ -134,7 +117,8 @@ public class GalleryActivity
         // Next, validate the extracted list URL strings by calling the local
         // validateInput() helper method. If the entire list of received URLs
         // are valid, then return this list. Otherwise return null.
-        
+
+
     }
 
     /**
@@ -160,7 +144,7 @@ public class GalleryActivity
         //
         // Return true if all the URLs are valid.
 
-        
+
     }
 
     /**
@@ -179,7 +163,7 @@ public class GalleryActivity
         // TODO (A2): create a new data intent, put the received
         // outputUrls list into the intent as an ParcelableArrayListExtra,
         // and return the intent.
-       
+
     }
 
     /**
@@ -195,14 +179,16 @@ public class GalleryActivity
         // TODO (A2): Call makeResultIntent to construct a return
         // intent that contains the list of currently displayed URLs
         // as an intent extra.
-       
+
+
 
         // TODO (A2): Now set the result intent to return.
-       
 
-        // TODO (A2): Call an Activity method to end this activity and return
-        // to parent activity.
-       
+
+
+        // TODO (A2): Call the appropriate Activity base class method to end
+        // this activity and return to parent activity.
+
 
         Log.d(TAG, "Activity finished.");
     }

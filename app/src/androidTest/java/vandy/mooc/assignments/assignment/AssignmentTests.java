@@ -1,13 +1,11 @@
 package vandy.mooc.assignments.assignment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.MediumTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,11 +27,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-//import static android.support.test.espresso.matcher.
-
 /**
  * This class uses Espresso integrated tests to verify that the assignment
  * DownloadActivity TODOs have been properly implemented.
+ *
+ * Note that the assignment number is automatically set in the application
+ * as a static field (ASSIGNMENT) of class AssignmentUtils. There is no need
+ * to explicitly change set this value in this test script.
  * <p/>
  * NOTE: These tests DO NOT require an internet connection.
  */
@@ -46,9 +46,10 @@ public class AssignmentTests extends ApplicationTestBase {
     private static final String TAG = "AssignmentTests";
 
     /**
-     * Sets the runner to test only assignment 1 code.
+     * Used in setup() to ensure that the application is forced to
+     * run assignment 2 code.
      */
-    private static final int ASSIGNMENT = 3;
+    private static final int ASSIGNMENT = 2;
 
     /**
      * Maximum time allowed for each test. Setting this value to
@@ -86,14 +87,6 @@ public class AssignmentTests extends ApplicationTestBase {
     }
 
     /**
-     * Broadcast intent sent by DownloadActivity and received by mock
-     * broadcast receiver.
-     */
-    private Intent mBroadcastIntent = null;
-
-
-
-    /**
      * Activity test rule.
      */
     @Rule
@@ -102,15 +95,6 @@ public class AssignmentTests extends ApplicationTestBase {
                     MainActivity.class,
                     true,
                     true);
-
-
-    @Rule
-    public ActivityTestRule mGallaryActivityRule =
-            new ActivityTestRule<>(
-                    GalleryActivity.class,
-                    true,
-                    true);
-
 
     /**
      * Full application test that starts the application and attempts to
@@ -130,8 +114,6 @@ public class AssignmentTests extends ApplicationTestBase {
     )
     @Test(timeout = TIMEOUT)
     public void MyTestTest() {
-
-
         // Ensure that permissions are acquired.
         allowPermissionsIfNeeded();
         // Clear all cached and restored data.
@@ -139,7 +121,7 @@ public class AssignmentTests extends ApplicationTestBase {
         // Open the overflow menu OR open the options menu,
         // depending on if the device has a hardware or software overflow menu button.
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation()
-                .getTargetContext());
+                                                   .getTargetContext());
         // delay 50ms to prevent Emulator lag causing test to fail.
         SystemClock.sleep(50);
 
@@ -152,7 +134,7 @@ public class AssignmentTests extends ApplicationTestBase {
             // delay 50ms to prevent Emulator lag causing test to fail.
             SystemClock.sleep(50);
             openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation()
-                    .getTargetContext());
+                                                       .getTargetContext());
             // delay 50ms to prevent Emulator lag causing test to fail.
             SystemClock.sleep(50);
         } catch (NoMatchingViewException e) {
@@ -167,13 +149,13 @@ public class AssignmentTests extends ApplicationTestBase {
         onView(withId(R.id.download_fab)).perform(click());
 
 
-        /**
-         * This code is somewhat needlessly complex, but it saves you time running the tests.
-         *
-         * It sees if the URLs have been downloaded yet every 2 seconds 5 times.
-         * It only throws an error if the last check fails. This cuts down on clock-time needed
-         * for test if emulator/internet are of sufficient speed.
-         */
+        //
+        // This code is somewhat needlessly complex, but it saves you time running the tests.
+        //
+        // It sees if the URLs have been downloaded yet every 2 seconds 5 times.
+        // It only throws an error if the last check fails. This cuts down on clock-time needed
+        // for test if emulator/internet are of sufficient speed.
+        //
         for (int i = 0 ; i < 5 ; i=i+2){
             // Sleep 2 seconds to between attempts.
             SystemClock.sleep(2000);
@@ -212,8 +194,7 @@ public class AssignmentTests extends ApplicationTestBase {
      * @return true if tests didn't fail.
      */
     public static boolean checkDefaultURLs(){
-        for (String urlToCheck :
-                defaultURLs) {
+        for (String urlToCheck : defaultURLs) {
             onView(withId(R.id.recycler_view_fragment))
                     .check(matches(hasDescendant(withContentDescription(urlToCheck))));
         }
