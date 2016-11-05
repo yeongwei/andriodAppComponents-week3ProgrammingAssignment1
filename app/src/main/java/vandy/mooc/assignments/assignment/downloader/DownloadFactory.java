@@ -1,6 +1,7 @@
 package vandy.mooc.assignments.assignment.downloader;
 
 import android.content.Context;
+import android.util.Log;
 
 import vandy.mooc.assignments.framework.downloader.DownloadPolicy;
 import vandy.mooc.assignments.framework.downloader.Downloader;
@@ -32,6 +33,7 @@ public final class DownloadFactory {
             DownloadPolicy policy,
             Context context,
             Request request) {
+        Log.i("TRACE", "Calling the DownloadFactory#getDownloader");
         /*
          * Simplified for this assignment, would normally be a switch statement based on which
          * version of the assignment as being ran.

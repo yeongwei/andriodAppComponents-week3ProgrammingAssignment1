@@ -2,6 +2,7 @@ package vandy.mooc.assignments.assignment.downloader;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 /**
@@ -24,7 +25,7 @@ public class HaMeRDownloader extends ImageDownloader {
     // TODO A2: Create a private final Handler associated with the main
     // thread looper. Note that this class and all its fields are instantiated
     // in the main thread.
-    private final Handler mHandler = new Handler(this.getContext().getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * A reference to the background thread to support the cancel hook.
