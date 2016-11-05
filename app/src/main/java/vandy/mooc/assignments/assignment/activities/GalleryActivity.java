@@ -74,7 +74,7 @@ public class GalleryActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("TRACE", "Within onCreate");
+        Log.i("TRACE", "Within GalleryActivity#onCreate");
         // Always call super class method first. Normally you would follow this
         // call with a call to inflate the activity's layout from XML, but this
         // is not necessary here because the assignment super class method will
@@ -92,7 +92,17 @@ public class GalleryActivity
             // Call local help method to extract the URLs from the activity's
             // starting intent and pass these URLs into the super class using
             // the setItems() helper method.
-
+            ArrayList<Uri> urls = getIntent().getParcelableArrayListExtra(this.INTENT_EXTRA_URLS);
+            if (urls == null)
+                Log.i("TRACE", "No urls passed into the GalleryActivity Intent");
+            else
+                if (urls.size() == 0)
+                    Log.i("TRACE", "For some strange reason, the urls is an empty list");
+                else {
+                    for (Uri uri : urls)
+                        Log.i("TRACE", "About to setItem for " + uri.toString());
+                    super.setItems(urls);
+                }
         } else {
             // The activity is being recreated after configuration change.
             // You can restore your activity's saved state from the passed
