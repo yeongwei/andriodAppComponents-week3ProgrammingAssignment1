@@ -164,6 +164,7 @@ public abstract class GalleryActivityBase
             }
 
             case 2: {
+                Log.i("TRACE", "About to use HaMeRDownloader policy");
                 // Use a grid layout with an image adapter and a HaMeR
                 // download policy.
                 downloadPolicy = DownloadPolicy.HaMeRDownloader;
@@ -198,6 +199,7 @@ public abstract class GalleryActivityBase
 
         // Only assignments 2, 3, and 4 will use a downloader.
         if (downloadPolicy != null) {
+            Log.i("TRACE", "About to setDownloadPolicy as " + downloadPolicy);
             DownloadManager.get().setDownloadPolicy(downloadPolicy);
         }
 
@@ -265,10 +267,13 @@ public abstract class GalleryActivityBase
     protected final void registerDownloader(
             Class<? extends Downloader> downloaderClass) {
         if (!AssignmentUtils.ASSIGNMENT_SWITCHING) {
+            Log.i("TRACE", "Shouldn't come into here");
             // Running app without assignment switching submenu which requires
             // an explicit call to registerDownloader
             DownloadManager.get().registerDownloader(downloaderClass);
+            Log.i("TRACE", "Registered downloader as " + downloaderClass);
         } else {
+            Log.i("TRACE", "AssignmentUtils.getAssignment(this): " + AssignmentUtils.getAssignment(this));
             switch (AssignmentUtils.getAssignment(this)) {
                 case 1:
                     // First assignment does not actually download any
@@ -277,6 +282,7 @@ public abstract class GalleryActivityBase
                     // the main activity page.
                     break;
                 case 2:
+                    Log.i("TRACE", "HaMeRDownloader will be registered");
                     DownloadManager.get()
                             .registerDownloader(HaMeRDownloader.class);
                     break;

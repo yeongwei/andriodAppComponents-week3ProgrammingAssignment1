@@ -1,11 +1,13 @@
 
 package vandy.mooc.assignments.assignment.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import vandy.mooc.assignments.R;
@@ -79,7 +81,11 @@ public class MainActivity extends MainActivityBase {
     @Override
     protected void startDownloadForResult(ArrayList<Uri> urls) {
         // TODO (A2): Start the Gallery Activity for result with the passed in Uri(s)
-
+        Log.i("TRACE", "Within startDownloadForResult");
+        for (Uri uri: urls)
+            Log.i("TRACE", uri.toString());
+        Intent intent = GalleryActivity.makeStartIntent(this, urls);
+        startActivityForResult(intent, DOWNLOAD_REQUEST_CODE);
     }
 
     /*
@@ -106,18 +112,24 @@ public class MainActivity extends MainActivityBase {
 
         // TODO (A2): Check if the request code matches the expected
         // static DOWNLOAD_REQUEST_CODE field value. If so then ...
-
+        if (requestCode == DOWNLOAD_REQUEST_CODE) {
             // TODO (A2): If the result code is RESULT_OK, then
             // call a local helper method to extract and display the returned
             // list of image URLs. Otherwise, call the ViewUtils show toast
             // helper to display the string resource with id
             // R.string .download_activity_cancelled. In either case, return
             // without calling the super class method.
+            if (resultCode == Activity.RESULT_OK) {
+                extractAndUpdateUrls(data);
+            } else {
+                ViewUtils.showToast(this, R.string.download_activity_cancelled);
+            }
+        } else {
 
-
-        // TODO (A2): The request code is not recognized so transparently forward
-        // parameters to super class method to handle.
-
+            // TODO (A2): The request code is not recognized so transparently forward
+            // parameters to super class method to handle.
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     /**
@@ -130,16 +142,18 @@ public class MainActivity extends MainActivityBase {
     private void extractAndUpdateUrls(Intent intent) {
         // TODO (A2): Extract the list of downloaded image URLs from the
         // passed intent.
-
+        ArrayList<Uri> urls = intent.getParcelableArrayListExtra(GalleryActivity.INTENT_EXTRA_URLS);
 
         // TODO (A2): If the list is empty, call ViewUtils show toast helper
         // to display the string resource R.string.no_images_received.
-
+        if (urls.size() == 0) {
+            ViewUtils.showToast(this, R.string.no_images_received);
+        }
 
         // TODO (A2): Always call the base class setItems() helper which will
         // refresh the layout to display the list contents (or nothing if the
         // list is empty).
-
+        setItems(urls);
     }
 
 

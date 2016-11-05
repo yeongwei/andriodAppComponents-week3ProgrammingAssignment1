@@ -1,6 +1,7 @@
 
 package vandy.mooc.assignments.assignment.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -56,15 +57,15 @@ public class GalleryActivity
         // TODO (A1,A2,A3): Create a new intent for starting this activity
         // using the passed context along with the class identifier
         // for this class.
-
+        Intent intent = new Intent(context, GalleryActivity.class);
 
         // TODO (A1,A2,A3): Put the received list of input URLs as an intent
         // use putParcelableArrayListExtra(String, ArrayList<Uri>) on the intent
         // using the predefined INTENT_EXTRA_URLS extra name.
-
+        intent.putParcelableArrayListExtra(INTENT_EXTRA_URLS, inputUrls);
 
         // TODO (A1,A2,A3): Return the intent.
-
+        return intent;
     }
 
     /*
@@ -73,6 +74,7 @@ public class GalleryActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("TRACE", "Within onCreate");
         // Always call super class method first. Normally you would follow this
         // call with a call to inflate the activity's layout from XML, but this
         // is not necessary here because the assignment super class method will
@@ -102,7 +104,8 @@ public class GalleryActivity
 
         // TODO(A2): Call base class helper method to register your downloader
         // implementation class.
-
+        Log.i("TRACE", "About to register HaMeRDownloader");
+        super.registerDownloader(HaMeRDownloader.class);
     }
 
     /**
@@ -117,8 +120,11 @@ public class GalleryActivity
         // Next, validate the extracted list URL strings by calling the local
         // validateInput() helper method. If the entire list of received URLs
         // are valid, then return this list. Otherwise return null.
-
-
+        ArrayList<Uri> urls = intent.getParcelableArrayListExtra(INTENT_EXTRA_URLS);
+        if (validateInput(urls))
+            return urls;
+        else
+            return null;
     }
 
     /**
@@ -135,16 +141,27 @@ public class GalleryActivity
         // If the list is null call ViewUtils.showToast() to display the
         // string R.string.input_url_list_is_null.
         //
+        if (inputUrls == null) {
+            ViewUtils.showToast(this, R.string.input_url_list_is_null);
+            return false;
+        }
         // If the list has a size of 0 then call ViewUtils.showToast()
         // to display the the string R.string.input_url_list_is_empty
         //
+        if (inputUrls.size() == 0) {
+            ViewUtils.showToast(this, R.string.input_url_list_is_empty);
+            return false;
+        }
         // Otherwise check if each list entry is valid using the
         // UriUtils.isValidUrl() helper and if any URL is not valid
         // return false.
         //
+        for (Uri uri: inputUrls) {
+            if (!UriUtils.isValidUrl(uri.getPath()))
+                return false;
+        }
         // Return true if all the URLs are valid.
-
-
+        return true;
     }
 
     /**
@@ -163,7 +180,9 @@ public class GalleryActivity
         // TODO (A2): create a new data intent, put the received
         // outputUrls list into the intent as an ParcelableArrayListExtra,
         // and return the intent.
-
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(INTENT_EXTRA_URLS, outputUrls);
+        return intent;
     }
 
     /**
@@ -179,16 +198,16 @@ public class GalleryActivity
         // TODO (A2): Call makeResultIntent to construct a return
         // intent that contains the list of currently displayed URLs
         // as an intent extra.
-
+        Intent intent = this.makeResultIntent(urls);
 
 
         // TODO (A2): Now set the result intent to return.
-
+        setResult(Activity.RESULT_OK, intent);
 
 
         // TODO (A2): Call the appropriate Activity base class method to end
         // this activity and return to parent activity.
-
+        finish();
 
         Log.d(TAG, "Activity finished.");
     }

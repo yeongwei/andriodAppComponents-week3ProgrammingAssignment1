@@ -24,7 +24,7 @@ public class HaMeRDownloader extends ImageDownloader {
     // TODO A2: Create a private final Handler associated with the main
     // thread looper. Note that this class and all its fields are instantiated
     // in the main thread.
-
+    private final Handler mHandler = new Handler(this.getContext().getMainLooper());
 
     /**
      * A reference to the background thread to support the cancel hook.
@@ -36,42 +36,60 @@ public class HaMeRDownloader extends ImageDownloader {
      */
     @Override
     public void execute() {
+        Log.i("TRACE", "Within execute");
         // TODO A2: Create a new final Runnable called 'downloadRunnable' to
         // process the download request (replace the null).
-
+        final Runnable downloadRunnable = new Runnable() {
 
             // TODO A2: Within the new runnable's run() method:
+            @Override
+            public void run() {
 
                 // TODO A2: Call the HaMeRDownloader helper method to
                 // determine if this thread has been interrupted; if so,
                 // just return to terminate the thread.
-
+                if (isInterrupted()) {
+                    cancel();
+                    return;
+                }
 
                 // TODO A2: Call ImageDownloader super class helper method
                 // to download the bitmap.
-
+                Bitmap bitMap = download();
 
                 // TODO A2: Since the download my take a while, check again to
                 // make sure that this thread has not been interrupted (using
                 // the same helper method as above); if it has been interrupted
                 // then just return to terminate the thread.
-
+                if (isInterrupted()) {
+                    cancel();
+                    return;
+                }
 
                 // TODO A2: Use the mHandler post(...) helper method to post
                 // a new Runnable to the main thread. This Runnable's run()
                 // method should simply call the ImageDownloader super class
                 // helper method postResult(...) to pass the downloaded bitmap
                 // to the application UI layer (activity) to display.
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        postResult(bitMap);
+                    }
+                };
 
+                mHandler.post(runnable);
+            }
+        };
 
         // TODO A2: Create a new Thread instance that will run the
         // 'downloadRunnable' created above, and assign it to the mThread
         // field. This assignment is necessary to support cancelling this
         // thread and the download operation.
-
+        mThread = new Thread(downloadRunnable);
 
         // TODO A2: Start the thread.
-
+        mThread.start();
     }
 
     /**
@@ -82,7 +100,8 @@ public class HaMeRDownloader extends ImageDownloader {
         // TODO A2: Call local isRunning() helper method to check if mThread
         // is currently running; if it is running, cancel it by calling its
         // interrupt() helper method.
-
+        if (this.isRunning())
+            mThread.interrupt();
     }
 
     /**
@@ -94,7 +113,13 @@ public class HaMeRDownloader extends ImageDownloader {
     private boolean isInterrupted() {
         // TODO A2: return 'true' if mThread is not null and has been
         // interrupted (see isInterrupted() helper method).
-
+        if (mThread == null)
+            return false;
+        else
+            if (mThread.isInterrupted())
+                return true;
+            else
+                return false;
     }
 
     /**
@@ -106,7 +131,13 @@ public class HaMeRDownloader extends ImageDownloader {
     public boolean isRunning() {
         // TODO A2: Return 'true' if mThread is not null and is running
         // (see isAlive() helper method)
-
+        if (mThread == null)
+            return false;
+        else
+            if (mThread.isAlive())
+                return true;
+            else
+                return false;
     }
 
     /**
@@ -118,6 +149,13 @@ public class HaMeRDownloader extends ImageDownloader {
     public boolean isCancelled() {
         // TODO A2: Return 'true' if mThread is not null and has been
         // interrupted (see isInterrupted() helper method).
+        if (mThread == null)
+            return false;
+        else
+            if (mThread.isInterrupted())
+                return true;
+            else
+                return false;
 
     }
 
@@ -133,6 +171,12 @@ public class HaMeRDownloader extends ImageDownloader {
         // terminated (completed). To determine if a thread has terminated,
         // you will need to use the Thread's getState() helper method and
         // compare it to the the appropriate Thread.State enumerated value.
-
+        if (mThread == null)
+            return false;
+        else
+            if (mThread.getState().equals(Thread.State.TERMINATED))
+                return true;
+            else
+                return false;
     }
 }

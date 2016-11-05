@@ -247,6 +247,7 @@ public class DownloadManager {
      * @param request A download request containing an application defined
      */
     void dispatch(Request request) {
+        Log.i("TRACE", "Do I even get here?");
         if (mDownloaderClass == null) {
             throw new IllegalStateException(
                     "No downloader class has been set.");
