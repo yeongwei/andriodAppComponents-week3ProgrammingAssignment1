@@ -54,17 +54,17 @@ public class GalleryActivity
     public static Intent makeStartIntent(
             Context context,
             ArrayList<Uri> inputUrls) {
-        // TODO (A1,A2,A3): Create a new intent for starting this activity
+        // Create a new intent for starting this activity
         // using the passed context along with the class identifier
         // for this class.
         Intent intent = new Intent(context, GalleryActivity.class);
 
-        // TODO (A1,A2,A3): Put the received list of input URLs as an intent
+        // Put the received list of input URLs as an intent
         // use putParcelableArrayListExtra(String, ArrayList<Uri>) on the intent
         // using the predefined INTENT_EXTRA_URLS extra name.
         intent.putParcelableArrayListExtra(INTENT_EXTRA_URLS, inputUrls);
 
-        // TODO (A1,A2,A3): Return the intent.
+        // Return the intent.
         return intent;
     }
 
@@ -88,7 +88,6 @@ public class GalleryActivity
         if (savedInstanceState == null) {
             // The activity is being started for the first time.
 
-            // TODO (A1,A2,A3,A4):
             // Call local help method to extract the URLs from the activity's
             // starting intent and pass these URLs into the super class using
             // the setItems() helper method.
@@ -112,7 +111,7 @@ public class GalleryActivity
             // onRestoreInstanceState() so you don't need to do anything here.
         }
 
-        // TODO(A2): Call base class helper method to register your downloader
+        // Call base class helper method to register your downloader
         // implementation class.
         Log.i("TRACE", "About to register HaMeRDownloader");
         super.registerDownloader(HaMeRDownloader.class);
@@ -125,7 +124,7 @@ public class GalleryActivity
      * @return A list of image URLs.
      */
     private List<Uri> extractInputUrlsFromIntent(Intent intent) {
-        // TODO (A1): First extract the list of input urls from the passed
+        // First extract the list of input urls from the passed
         // intent extras using the provided INTENT_EXTRA_URLS name string.
         // Next, validate the extracted list URL strings by calling the local
         // validateInput() helper method. If the entire list of received URLs
@@ -146,7 +145,7 @@ public class GalleryActivity
      * first error encountered.
      */
     private boolean validateInput(ArrayList<Uri> inputUrls) {
-        // TODO (A1,A2,A3,A4): Validate the passed URL.
+        // Validate the passed URL.
         //
         // If the list is null call ViewUtils.showToast() to display the
         // string R.string.input_url_list_is_null.
@@ -166,10 +165,10 @@ public class GalleryActivity
         // UriUtils.isValidUrl() helper and if any URL is not valid
         // return false.
         //
-        for (Uri uri: inputUrls) {
+        for (Uri uri: inputUrls)
             if (!UriUtils.isValidUrl(uri.getPath()))
                 return false;
-        }
+
         // Return true if all the URLs are valid.
         return true;
     }
@@ -187,7 +186,7 @@ public class GalleryActivity
      */
     @SuppressWarnings("WeakerAccess")
     protected Intent makeResultIntent(ArrayList<Uri> outputUrls) {
-        // TODO (A2): create a new data intent, put the received
+        // create a new data intent, put the received
         // outputUrls list into the intent as an ParcelableArrayListExtra,
         // and return the intent.
         Intent intent = new Intent();
@@ -205,17 +204,15 @@ public class GalleryActivity
             @NonNull ArrayList<Uri> urls) {
         Log.d(TAG, "Setting a result intent.");
 
-        // TODO (A2): Call makeResultIntent to construct a return
+        // Call makeResultIntent to construct a return
         // intent that contains the list of currently displayed URLs
         // as an intent extra.
         Intent intent = this.makeResultIntent(urls);
 
-
-        // TODO (A2): Now set the result intent to return.
+        // Now set the result intent to return.
         setResult(Activity.RESULT_OK, intent);
 
-
-        // TODO (A2): Call the appropriate Activity base class method to end
+        // Call the appropriate Activity base class method to end
         // this activity and return to parent activity.
         finish();
 
